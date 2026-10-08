@@ -53,7 +53,11 @@ def calculate_distances_classify(
                         t.update(1)
                         save_batch.append(edge)
                         if len(save_batch) > batch_size:
-                            bs_comparison.save_edges_to_db(save_batch, commit=True)
+                            bs_comparison.save_edges_to_db(
+                                save_batch,
+                                commit=True,
+                                max_distance=run["max_stored_distance"],
+                            )
                             save_batch = []
 
                 bs_comparison.generate_edges(
@@ -66,7 +70,9 @@ def calculate_distances_classify(
                     callback,
                 )
 
-            bs_comparison.save_edges_to_db(save_batch, commit=True)
+            bs_comparison.save_edges_to_db(
+                save_batch, commit=True, max_distance=run["max_stored_distance"]
+            )
 
             bs_data.DB.commit()
 

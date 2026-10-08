@@ -320,6 +320,20 @@ def common_cluster_query(fn):
                 "For more detail see the wiki. (default: 0.3)."
             ),
         ),
+        click.option(
+            "--max-stored-distance",
+            type=click.FloatRange(0.0, 1.0, min_open=True),
+            default=1.0,
+            help=(
+                "Only distances at or below this value are stored in the database. "
+                "Distances above every GCF cutoff are never used in the output, so "
+                "lowering this value (e.g. to the largest of --gcf-cutoffs) greatly "
+                "reduces memory and disk usage for large datasets. Must be greater than "
+                "or equal to the largest GCF cutoff. Pairs that were not stored are "
+                "recalculated when a database is reused. (default: 1.0, i.e. all "
+                "distances are stored)."
+            ),
+        ),
         # output parameters
         click.option(
             "--profile-path",

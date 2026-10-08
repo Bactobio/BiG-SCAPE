@@ -18,6 +18,7 @@ from .cli_validations import (
     validate_class_category_filter,
     validate_output_paths,
     validate_disk_only,
+    validate_max_stored_distance,
     validate_binning_cluster_workflow,
     validate_pfam_path,
     validate_domain_include_list,
@@ -155,6 +156,7 @@ def cluster(ctx, *args, **kwargs):
     validate_domain_include_list(ctx)
     validate_output_paths(ctx)
     validate_disk_only(ctx)
+    validate_max_stored_distance(ctx)
 
     # initialize logger
     init_logger(ctx.obj)
