@@ -281,7 +281,7 @@ def run_bigscape(run: dict) -> None:
     legacy_prepare_output(run["output_dir"], pfam_info)
 
     # write full network file
-    #write_full_network_file(run, all_bgc_records)
+    write_full_network_file(run, all_bgc_records)
 
     # prepare output files per cutoff
     for cutoff in run["gcf_cutoffs"]:
