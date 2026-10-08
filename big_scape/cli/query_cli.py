@@ -17,6 +17,7 @@ from .cli_validations import (
     validate_classify,
     validate_output_paths,
     validate_disk_only,
+    validate_max_stored_distance,
     validate_query_bgc,
     validate_pfam_path,
     set_start,
@@ -115,6 +116,7 @@ def query(ctx, *args, **kwarg):
     validate_binning_query_workflow(ctx)
     validate_query_record(ctx)
     validate_disk_only(ctx)
+    validate_max_stored_distance(ctx)
 
     # initialize logger
     init_logger(ctx.obj)

@@ -3,6 +3,7 @@
 # from python
 import logging
 import sqlite3
+from typing import Optional
 
 # from dependencies
 from sqlalchemy import insert, select
@@ -80,6 +81,7 @@ def save_edge_to_db(
 def save_edges_to_db(
     edges: list[tuple[int, int, float, float, float, float, ComparableRegion]],
     commit: bool = False,
+    max_distance: Optional[float] = None,
 ) -> None:
     """Save many edges to the database
 
@@ -87,6 +89,8 @@ def save_edges_to_db(
         edges (list[tuple[int, int, float, float, float, float, int, int, int, int,
                int, int, int, int, bool]]): list of edges to save
         commit (bool): whether to commit immediately, e.g. during multiprocessing
+        max_distance (Optional[float]): if set, only edges with a distance at or below
+            this value are saved. None saves all edges
     """
     # save the comparison data to the database
     # using raw sqlite for this because sqlalchemy is not fast enough
@@ -110,7 +114,11 @@ def save_edges_to_db(
     # trigger an integrityerror
     query = "INSERT OR IGNORE INTO distance VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
-    unpacked_edges = [edge[:-1] + edge[-1].to_tuple() for edge in edges]
+    unpacked_edges = [
+        edge[:-1] + edge[-1].to_tuple()
+        for edge in edges
+        if max_distance is None or edge[2] <= max_distance
+    ]
 
     cursor.executemany(query, unpacked_edges)
 

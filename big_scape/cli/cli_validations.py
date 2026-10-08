@@ -1,4 +1,4 @@
-""" A module to store all CLI parameter validations """
+"""A module to store all CLI parameter validations"""
 
 # from python
 from datetime import datetime
@@ -154,6 +154,25 @@ def validate_disk_only(ctx) -> None:
         )
         raise click.UsageError(
             "You have selected both --no-db-dump and --disk-only. Please select only one"
+        )
+
+
+def validate_max_stored_distance(ctx) -> None:
+    """Checks that the max stored distance does not discard edges needed for any of
+    the GCF cutoffs"""
+
+    max_cutoff = max(ctx.obj["gcf_cutoffs"])
+
+    if ctx.obj["max_stored_distance"] < max_cutoff:
+        logging.error(
+            "--max-stored-distance (%s) must be greater than or equal to the largest "
+            "GCF cutoff (%s)",
+            ctx.obj["max_stored_distance"],
+            max_cutoff,
+        )
+        raise click.BadParameter(
+            f"--max-stored-distance ({ctx.obj['max_stored_distance']}) must be greater "
+            f"than or equal to the largest GCF cutoff ({max_cutoff})"
         )
 
 
